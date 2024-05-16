@@ -44,4 +44,11 @@ class ApiService
         return $this->guzzleHelper->post($this->composeUrl($url), $data, $this->getHeaders());
     }
 
+    public function getById($id)
+    {
+        $url = 'pet/'. $id;
+
+        return $this->guzzleHelper->get($this->composeUrl($url), []);
+    }
+
 }

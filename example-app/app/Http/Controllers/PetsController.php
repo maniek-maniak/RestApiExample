@@ -70,4 +70,22 @@ class PetsController extends Controller
         return redirect('/');
 
     }
+
+    public function show($id)
+    {
+        $pet = $this->apiService->getById($id)->getData();
+//        dd($pet);
+        $categories = $this->categoriesRepository->getCategories();
+        $tags = $this->tagsRepository->getTags();
+        $statuses = $this->statusesRepository->getStatues();
+
+
+        return view('pets/edit',
+                [
+                    "pet" => $pet,
+                    "categories" => $categories,
+                    "tags" => $tags,
+                    "statuses" => $statuses,
+                ]);
+    }
 }
