@@ -37,4 +37,11 @@ class ApiService
         return $headers;
     }
 
+    public function addNewPet($data)
+    {
+        static $url = 'pet';
+
+        return $this->guzzleHelper->post($this->composeUrl($url), $data, $this->getHeaders());
+    }
+
 }

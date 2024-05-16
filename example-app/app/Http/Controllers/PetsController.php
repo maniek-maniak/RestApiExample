@@ -47,4 +47,27 @@ class PetsController extends Controller
             "statuses" => $statuses,
         ]);
     }
+
+    public function store(PetsAdd $request)
+    {
+        $data = [
+            "category" => [
+                "name" => $request->input('category')
+                ],
+            "tags" => [[
+                "name" => $request->input('tags')
+                ]],
+            "name" => $request->input('name'),
+            "status" => $request->input('status'),
+        ];
+
+        $result = $this->apiService->addNewPet($data);
+        // ToDo: przydałby się jakiś dymek error/false/true
+        if($result->getStatusCode() != 200) {
+            return redirect('/pet/add');
+        }
+
+        return redirect('/');
+
+    }
 }
