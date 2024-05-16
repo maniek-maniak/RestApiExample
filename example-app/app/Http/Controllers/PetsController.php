@@ -88,4 +88,49 @@ class PetsController extends Controller
                     "statuses" => $statuses,
                 ]);
     }
+
+    public function edit($id, PetsAdd $request) //ToDo: pewnie dla edycji przyda się inna validacja
+    {
+
+        $data = [
+            "id" => $id,
+            "category" => [
+                "name" => $request->input('category')
+            ],
+            "tags" => [[
+                "name" => $request->input('tags')
+            ]],
+            "name" => $request->input('name'),
+            "status" => $request->input('status'),
+        ];
+
+        $result = $this->apiService->editPet($data);
+        // ToDo: przydałby się jakiś dymek error/false/true
+        if($result->getStatusCode() != 200) {
+            return redirect('pet/show/'.$id);
+        }
+
+        return redirect('/');
+
+    }
+
+    public function askToConfirmDestroy($id)
+    {
+        $pet = $this->apiService->getById($id)->getData();;
+
+        return view('pets/confirmDestroy', ["pet" => $pet]);
+
+    }
+
+    public function destroy($id)
+    {
+        $result = $this->apiService->deletePet($id);
+
+        // ToDo: przydałby się jakiś dymek error/false/tru
+        if($result->getStatusCode() != 200) {
+            return redirect('pet/show/'.$id);
+        }
+
+        return redirect('/');
+    }
 }

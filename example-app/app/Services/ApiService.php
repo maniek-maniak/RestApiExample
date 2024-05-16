@@ -23,20 +23,6 @@ class ApiService
 
     }
 
-    protected function composeUrl(string $url): string
-    {
-        return 'https://petstore.swagger.io/v2/'. $url;
-    }
-
-    protected function getHeaders(): array
-    {
-        $headers = [
-        'Content-Type' => 'application/json',
-        'Accept' => 'application/json'
-    ];
-        return $headers;
-    }
-
     public function addNewPet($data)
     {
         static $url = 'pet';
@@ -49,6 +35,35 @@ class ApiService
         $url = 'pet/'. $id;
 
         return $this->guzzleHelper->get($this->composeUrl($url), []);
+    }
+
+    public function editPet($data)
+    {
+        static $url = 'pet';
+
+        return $this->guzzleHelper->put($this->composeUrl($url), $data, $this->getHeaders());
+    }
+
+    public function deletePet($id)
+    {
+        $url = 'pet/'. $id;
+
+        return $this->guzzleHelper->delete($this->composeUrl($url), [], []);
+    }
+
+    
+    protected function composeUrl(string $url): string
+    {
+        return 'https://petstore.swagger.io/v2/'. $url;
+    }
+
+    protected function getHeaders(): array
+    {
+        $headers = [
+        'Content-Type' => 'application/json',
+        'Accept' => 'application/json'
+    ];
+        return $headers;
     }
 
 }
