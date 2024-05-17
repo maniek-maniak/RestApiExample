@@ -87,6 +87,7 @@ class GuzzleHelper
         try{
             $response = $this->client->request($method, $url, [
                 'json' => $body,
+                // 'form_data' => $body,
                 'headers' => $headers
             ]);
             $data = $response->getBody()->getContents();
@@ -100,11 +101,12 @@ class GuzzleHelper
             if ($e->hasResponse()) {
                 $response = $e->getResponse();
                 $data = json_decode((string) $response->getStatusCode());
+                // dd($response->getStatusCode());
 
                 if($format){
                     return response()->json($this->formatData($data), $response->getStatusCode());
                 }
-                
+
                 return response()->json($data, $response->getStatusCode());
             }
             throw new Exception($e->getResponse()->getBody()->getContents());

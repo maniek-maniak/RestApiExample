@@ -61,9 +61,14 @@ class PetsController extends Controller
             "status" => $request->input('status'),
         ];
 
-        $result = $this->apiService->addNewPet($data);
+        $response = $this->apiService->addNewPet($data);
+
         // ToDo: przydałby się jakiś dymek error/false/true
-        if($result->getStatusCode() != 200) {
+        if($response->getStatusCode() == 405){
+            return view('errors/405');
+        };
+        
+        if($response->getStatusCode() != 200) {
             return redirect('/pet/add');
         }
 
@@ -108,9 +113,14 @@ class PetsController extends Controller
             "status" => $request->input('status'),
         ];
 
-        $result = $this->apiService->editPet($data);
+        $response = $this->apiService->editPet($data);
+
         // ToDo: przydałby się jakiś dymek error/false/true
-        if($result->getStatusCode() != 200) {
+        if($response->getStatusCode() == 405){
+            return view('errors/405');
+        };
+
+        if($response->getStatusCode() != 200) {
             return redirect('pet/show/'.$id);
         }
 
