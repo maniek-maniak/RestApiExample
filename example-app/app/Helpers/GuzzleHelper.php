@@ -90,14 +90,22 @@ class GuzzleHelper
                 'headers' => $headers
             ]);
             $data = $response->getBody()->getContents();
+
             if($format){
                 return response()->json($this->formatData($data), $response->getStatusCode());
             }
-            return $data;
+
+            return response()->json($data, $response->getStatusCode());
         }catch(Exception $e){
             if ($e->hasResponse()) {
                 $response = $e->getResponse();
-                $data = json_decode((string) $response->getBody());
+                $data = json_decode((string) $response->getStatusCode());
+
+                if($format){
+                    return response()->json($this->formatData($data), $response->getStatusCode());
+                }
+                
+                return response()->json($data, $response->getStatusCode());
             }
             throw new Exception($e->getResponse()->getBody()->getContents());
         }

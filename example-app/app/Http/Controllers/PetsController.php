@@ -73,8 +73,12 @@ class PetsController extends Controller
 
     public function show($id)
     {
-        $pet = $this->apiService->getById($id)->getData();
-//        dd($pet);
+        $response = $this->apiService->getById($id);
+        if($response->getStatusCode() == 404){
+            return view('errors/404');
+        };
+
+        $pet = $response->getData();
         $categories = $this->categoriesRepository->getCategories();
         $tags = $this->tagsRepository->getTags();
         $statuses = $this->statusesRepository->getStatues();
